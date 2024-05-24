@@ -11,33 +11,86 @@ item.value = <Project>(JSON.parse(localStorage.items)).filter((i: Project) => i.
 console.log(item.value)
 
 let adding = ref<boolean>(false)
+
+let task = ref();
+
+checkStatus()
+
+function checkStatus() {
+    if (item.value?.tasks.filter((e) => e.completed == false)[0] != null) {
+        item.value.checked = false;
+        localStorage.items = JSON.stringify(JSON.parse(localStorage.items).map((i: Project) => {
+            if (i.id == item.value?.id) {
+                i.checked = false;
+            }
+            return i;
+        }))
+    } else {
+        item.value.checked = true;
+        localStorage.items = JSON.stringify(JSON.parse(localStorage.items).map((i: Project) => {
+            if (i.id == item.value?.id) {
+                i.checked = true;
+            }
+            return i;
+        }))
+    }
+}
+
+function completeTask(index: number) {
+    let nts = item.value?.tasks.map((e, i) => {
+        if (i == index) e.completed = true;
+        return e;
+    })
+    item.value.tasks = nts;
+    console.log(nts)
+    localStorage.items = JSON.stringify(JSON.parse(localStorage.items).map((i: Project) => {
+        if (i.id == item.value?.id) {
+            i.tasks = nts;
+        }
+        return i;
+    }))
+    checkStatus()
+}
+
+function addTask(value: string) {
+    localStorage.items = JSON.stringify(JSON.parse(localStorage.items).map((i: Project) => {
+        if (i.id == item.value?.id) {
+            i.tasks.push({ completed: false, content: value });
+        }
+        return i;
+    }))
+    item.value?.tasks.push({ completed: false, content: value })
+    adding.value = false
+    task.value = ''
+    checkStatus()
+}
 </script>
 
 <template>
     <div class="container">
         <div class="left"></div>
         <div class="right">
-            <h1>{{ item.title }}</h1>
+            <h1>{{ item?.title }}</h1>
             <!-- convert to component -->
             <Status :checked="item.checked" />
             <div class="flag">
-                <img height="64" width="64" src="https://flagsapi.com/BR/flat/64.png">
+                <img height="64" width="64" :src="`https://flagsapi.com/${item?.flag}/flat/64.png`">
             </div>
             <hr>
             <h4>Descrição</h4>
-            <p>{{ item.description }}</p>
+            <p>{{ item?.description }}</p>
             <hr>
             <h4>Passo a passo para o reparo</h4>
             <div class="list">
-                <div class="item">
-                    <!-- button with bool completed state -->
-                    <button>
-                        <svg v-if="true" width="24" height="24" viewBox="0 0 16 16" fill="none"
+                <div class="item" v-for="(x, i) in item?.tasks" :key="i">
+                    <button @click="() => completeTask(i)">
+                        <svg v-if="!x.completed" width="24" height="24" viewBox="0 0 16 16" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <rect x="1" y="1" width="14" height="14" stroke="white" stroke-width="2" />
                         </svg>
+                        <div v-else>X</div>
                     </button>
-                    text
+                    <p>{{ x.content }}</p>
                 </div>
             </div>
             <div v-if="!adding" class="add" @click="() => adding = true">
@@ -45,7 +98,14 @@ let adding = ref<boolean>(false)
                     <path d="M12 6.85714H6.85714V12H5.14286V6.85714H0V5.14286H5.14286V0H6.85714V5.14286H12V6.85714Z"
                         fill="#F8F8F8" />
                 </svg>
-                <input type="text" placeholder="Adicionar nova item">
+                Adicionar novo item
+            </div>
+            <div v-else class="add-add">
+                <div class="it">
+                    <input type="text" placeholder="Digite aqui..." v-model="task">
+                    <Status :checked="false" :text="true" class="button" @click="() => addTask(task)" />
+                </div>
+                <hr>
             </div>
         </div>
     </div>
@@ -88,6 +148,10 @@ hr {
     }
 
     .list {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+
         .item {
             display: flex;
             align-items: center;
@@ -106,13 +170,52 @@ hr {
     }
 }
 
+.add-add {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-top: 10px;
+    border: solid 2px #94A3B8;
+    border-radius: 6px;
+    padding-top: 5px;
+
+    input {
+        background: none;
+        border: none;
+        outline: none;
+        width: 70%;
+        color: #ffffff;
+
+        &::placeholder {
+            color: #ffffff7e;
+        }
+    }
+
+    .it {
+        display: flex;
+        align-items: center;
+        padding: 3px 5px;
+
+        .button {
+            cursor: pointer;
+        }
+    }
+
+    hr {
+        width: 98%;
+        border: solid .2px #94a3b862;
+        margin: auto;
+        margin-bottom: 10px;
+    }
+}
+
 .add {
+    opacity: 60;
     margin-top: 10px;
     display: flex;
     align-items: center;
     width: 250px;
     gap: 10px;
-    color: #FFFFFF99;
 
     input {
         background: transparent;
