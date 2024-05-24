@@ -80,7 +80,6 @@ items.value = JSON.parse(localStorage.getItem("items"))
 filterDisplay('');
 
 function filterDisplay(search: string) {
-    console.log(search)
     if (search.split("").length > 0) {
         filtered.value = items.value.filter((i) => i.title.toLowerCase().includes(search.toLowerCase()))
     }
