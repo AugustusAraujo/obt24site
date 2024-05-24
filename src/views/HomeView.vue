@@ -3,71 +3,80 @@ import { ref } from 'vue'
 import ProjectCard from "../components/ProjectCard.vue"
 import type { Project } from '../types/project.type'
 
-let items = ref<Project[]>([{
-    id: 1,
-    cover: '',
-    description: '',
-    flag: 'BR',
-    tasks: [],
-    title: 'Densidade óssea e muscular em microgravidade',
-    checked: true,
-}, {
-    id: 2,
-    cover: '',
-    description: '',
-    flag: 'BR',
-    tasks: [],
-    title: 'Materiais resistentes à radiação espacial',
-    checked: true,
-}, {
-    id: 3,
-    cover: '',
-    description: '',
-    flag: 'BR',
-    tasks: [],
-    title: 'Comportamento de fluidos em microgravidade',
-    checked: true,
-}, {
-    id: 4,
-    cover: '',
-    description: '',
-    flag: 'BR',
-    tasks: [],
-    title: 'Microrganismos em ambiente extremo',
-    checked: true,
-}, {
-    id: 5,
-    cover: '',
-    description: '',
-    flag: 'BR',
-    tasks: [],
-    title: 'Crescimento de plantas em microgravidade',
-    checked: true,
-}, {
-    id: 6,
-    cover: '',
-    description: '',
-    flag: 'BR',
-    tasks: [],
-    title: 'Regeneração de tecidos em microgravidade',
-    checked: true,
-}, {
-    id: 7,
-    cover: '',
-    description: '',
-    flag: 'BR',
-    tasks: [],
-    title: 'Comunicação por rádio no espaço',
-    checked: true,
-}, {
-    id: 8,
-    cover: '',
-    description: '',
-    flag: 'BR',
-    tasks: [],
-    title: 'Cristalização de proteínas em microgravidade',
-    checked: true,
-},])
+let items = ref<Project[]>([]);
+
+if (localStorage.getItem("items") == null) {
+    localStorage.items = JSON.stringify([
+        {
+            id: 1,
+            cover: '',
+            description: '',
+            flag: 'BR',
+            tasks: [],
+            title: 'Densidade óssea e muscular em microgravidade',
+            checked: false,
+        }, {
+            id: 2,
+            cover: '',
+            description: '',
+            flag: 'BR',
+            tasks: [],
+            title: 'Materiais resistentes à radiação espacial',
+            checked: true,
+        }, {
+            id: 3,
+            cover: '',
+            description: '',
+            flag: 'BR',
+            tasks: [],
+            title: 'Comportamento de fluidos em microgravidade',
+            checked: true,
+        }, {
+            id: 4,
+            cover: '',
+            description: '',
+            flag: 'BR',
+            tasks: [],
+            title: 'Microrganismos em ambiente extremo',
+            checked: true,
+        }, {
+            id: 5,
+            cover: '',
+            description: '',
+            flag: 'BR',
+            tasks: [],
+            title: 'Crescimento de plantas em microgravidade',
+            checked: true,
+        }, {
+            id: 6,
+            cover: '',
+            description: '',
+            flag: 'BR',
+            tasks: [],
+            title: 'Regeneração de tecidos em microgravidade',
+            checked: true,
+        }, {
+            id: 7,
+            cover: '',
+            description: '',
+            flag: 'BR',
+            tasks: [],
+            title: 'Comunicação por rádio no espaço',
+            checked: true,
+        }, {
+            id: 8,
+            cover: '',
+            description: '',
+            flag: 'BR',
+            tasks: [],
+            title: 'Cristalização de proteínas em microgravidade',
+            checked: true,
+        },])
+}
+
+items.value = JSON.parse(localStorage.getItem("items"))
+
+
 </script>
 
 <template>

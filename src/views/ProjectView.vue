@@ -1,22 +1,31 @@
 <script setup lang="ts">
 import Status from "@/components/Status.vue";
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { Project } from "../types/project.type";
+
+const route = useRoute()
+let item = ref<Project>()
+
+item.value = <Project>(JSON.parse(localStorage.items)).filter((i: Project) => i.id == Number(route.params.id))[0]
+console.log(item.value)
+
+let adding = ref<boolean>(false)
 </script>
 
 <template>
     <div class="container">
         <div class="left"></div>
         <div class="right">
-            <h1>Materiais resistentes à radiação espacial</h1>
+            <h1>{{ item.title }}</h1>
             <!-- convert to component -->
-            <Status :checked="true" />
+            <Status :checked="item.checked" />
             <div class="flag">
                 <img height="64" width="64" src="https://flagsapi.com/BR/flat/64.png">
             </div>
             <hr>
             <h4>Descrição</h4>
-            <p>Este experimento tem como objetivo analisar os efeitos da microgravidade na densidade óssea e muscular
-                dos astronautas que ficam por longos períodos a bordo da ISS. A pesquisa busca entender como a falta de
-                gravidade afeta o corpo humano e quais são as consequências a longo prazo.</p>
+            <p>{{ item.description }}</p>
             <hr>
             <h4>Passo a passo para o reparo</h4>
             <div class="list">
@@ -31,7 +40,7 @@ import Status from "@/components/Status.vue";
                     text
                 </div>
             </div>
-            <div class="add">
+            <div v-if="!adding" class="add" @click="() => adding = true">
                 <svg width="20" height="20" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 6.85714H6.85714V12H5.14286V6.85714H0V5.14286H5.14286V0H6.85714V5.14286H12V6.85714Z"
                         fill="#F8F8F8" />
