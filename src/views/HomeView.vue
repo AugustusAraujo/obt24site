@@ -14,7 +14,7 @@ if (localStorage.getItem("items") == null) {
             flag: 'BR',
             tasks: [],
             title: 'Densidade óssea e muscular em microgravidade',
-            checked: false,
+            checked: true,
         }, {
             id: 2,
             cover: '',
@@ -22,7 +22,7 @@ if (localStorage.getItem("items") == null) {
             flag: 'BR',
             tasks: [],
             title: 'Materiais resistentes à radiação espacial',
-            checked: true,
+            checked: false,
         }, {
             id: 3,
             cover: '',
@@ -30,7 +30,7 @@ if (localStorage.getItem("items") == null) {
             flag: 'BR',
             tasks: [],
             title: 'Comportamento de fluidos em microgravidade',
-            checked: true,
+            checked: false,
         }, {
             id: 4,
             cover: '',
@@ -54,7 +54,7 @@ if (localStorage.getItem("items") == null) {
             flag: 'BR',
             tasks: [],
             title: 'Regeneração de tecidos em microgravidade',
-            checked: true,
+            checked: false,
         }, {
             id: 7,
             cover: '',
@@ -70,7 +70,7 @@ if (localStorage.getItem("items") == null) {
             flag: 'BR',
             tasks: [],
             title: 'Cristalização de proteínas em microgravidade',
-            checked: true,
+            checked: false,
         },])
 }
 

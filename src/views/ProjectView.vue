@@ -36,9 +36,9 @@ function checkStatus() {
     }
 }
 
-function completeTask(index: number) {
+function completeTask(index: number, vv: boolean) {
     let nts = item.value?.tasks.map((e, i) => {
-        if (i == index) e.completed = true;
+        if (i == index) e.completed = vv;
         return e;
     })
     item.value.tasks = nts;
@@ -83,7 +83,7 @@ function addTask(value: string) {
             <h4>Passo a passo para o reparo</h4>
             <div class="list">
                 <div class="item" v-for="(x, i) in item?.tasks" :key="i">
-                    <button @click="() => completeTask(i)">
+                    <button @click="() => completeTask(i, !x.completed ? true : false)">
                         <svg v-if="!x.completed" width="24" height="24" viewBox="0 0 16 16" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <rect x="1" y="1" width="14" height="14" stroke="white" stroke-width="2" />
