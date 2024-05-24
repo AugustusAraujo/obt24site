@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+import HeaderComponent from "@/components/Header.vue"
 import { ref } from 'vue'
 import ProjectCard from "../components/ProjectCard.vue"
 import type { Project } from '../types/project.type'
 
 let items = ref<Project[]>([]);
+let filtered = ref<Project[]>([]);
 
 if (localStorage.getItem("items") == null) {
     localStorage.items = JSON.stringify([
@@ -73,16 +75,29 @@ if (localStorage.getItem("items") == null) {
             checked: false,
         },])
 }
-
 items.value = JSON.parse(localStorage.getItem("items"))
+
+filterDisplay('');
+
+function filterDisplay(search: string) {
+    console.log(search)
+    if (search.split("").length > 0) {
+        filtered.value = items.value.filter((i) => i.title.toLowerCase().includes(search.toLowerCase()))
+    }
+    if (search == '') {
+        filtered.value = items.value;
+    }
+}
+
 
 
 </script>
 
 <template>
+    <HeaderComponent @search="filterDisplay" />
     <div class="list">
-        <ProjectCard v-for="value in items" :key="value.id" :title="value.title" :id="value.id" :checked="value.checked"
-            :cover="value.cover" />
+        <ProjectCard v-for="value in filtered" :key="value.id" :title="value.title" :id="value.id"
+            :checked="value.checked" :cover="value.cover" />
     </div>
     <div class="pag" v-show="false">
         <div class="prev">
@@ -105,7 +120,7 @@ items.value = JSON.parse(localStorage.getItem("items"))
 }
 
 .list {
-    margin: 30px auto;
+    margin: 74px auto;
     display: grid;
     grid-template-columns: auto auto auto auto;
     row-gap: 30px;
